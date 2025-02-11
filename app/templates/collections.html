@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>hi</p>
+
+<ul>
+    {% for item in categories_and_thumbs %}
+        <li>
+            <h3>{{ item.category }}</h3>  
+            <a href="{{ url_for('main.category', category_name=item.category) }}">
+                <img src="{{ item.thumb }}" alt="Category Thumbanail" width="100">
+            </a> 
+        </li>
+    {% endfor %}
+</ul>
 {% endblock %}

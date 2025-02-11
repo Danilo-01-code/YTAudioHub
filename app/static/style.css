@@ -74,3 +74,104 @@ p {
 #submit:hover, #audioFormat:hover {
     background-color: #404040;
 }
+
+
+.category-header {
+    text-align: center;
+    color: #ffffff;
+    margin: 30px 0;
+}
+
+.item-author{   
+    text-align: center;
+}
+
+.items-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+.items-list li {
+    padding: 25px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px; 
+}
+
+.items-list li:last-child {
+    border-bottom: none;
+}
+
+.items-list strong {
+    display: block;
+    color: #2d2d2d;
+    margin: 8px 0;
+}
+
+.items-list .item-title {
+    font-size: 1.4em;
+    margin-bottom: 12px;
+}
+
+.items-list img {
+    display: block;
+    margin: 15px 0;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.items-list audio {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.download-link {
+    display: block;
+    width: fit-content; 
+    margin: 10px auto; 
+    background-color: #2d2d2d;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.download-link:hover {
+    background-color: #404040;
+}
+
+.back-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.back-link {
+    display: inline-block;
+    background-color: #2d2d2d;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.back-link:hover {
+    background-color: #404040;
+}
+
+.image {
+    display: block; /* Transforma a imagem em um elemento de bloco */
+    margin: 20px auto; /* Centraliza horizontalmente e adiciona margem vertical */
+    max-width: 100%; /* Garante que a imagem não ultrapasse o contêiner */
+    height: auto; /* Mantém a proporção da imagem */
+    border-radius: 4px; /* Adiciona bordas arredondadas */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adiciona sombra */
+}
+
+.image-container {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+}

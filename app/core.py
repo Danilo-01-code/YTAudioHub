@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, make_response, redirect
+from flask import Blueprint, render_template, request, redirect, url_for, flash, make_response, redirect, send_from_directory
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import *
@@ -16,24 +16,61 @@ def index():
     username = request.cookies.get('username')
     form = LinkForm()
 
-    if form.validate_on_submit():
+    if request.method == "POST":
         link = form.yt_link.data
         audio_format = request.form.get('audioFormat')
         user = Users.get(Users.username == username)
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        output_path = os.path.join(current_directory, "static", "files")
 
-        download_yt_audio(link, "./files", audio_format)
-        author, title =  get_video_info(link)
+        author, title, thumbnail = get_data_url(link, output_path, audio_format)
 
-        audio = Audios(title = title, author = author, path = "./files",user_id = user.id)
+        audio = Audios.create(title = title, author = author,thumb = thumbnail, path = f"/files/{title}.{audio_format}",user_id = user.id, category = "_")
 
 
     return render_template("index.html",username = username, form = form)
 
-@main.route('/collections', methods = ['GET'])
+@main.route('/collections')
 def collections():
     username = request.cookies.get('username')
-    return render_template("collections.html", username = username)
+    user = Users.get(Users.username == username)
 
+    categories = Audios.select(Audios.category).where(Audios.user == user.id).distinct() # Search All the categories from the user files
+
+    thumbnails = []
+
+    for category in categories: # Take one thumbnail for each category
+        thumb_query = (
+        Audios.select(Audios.thumb)
+        .where(Audios.user == user.id,Audios.category == category.category)
+        .distinct()
+        .limit(1)
+        .first()
+        )
+
+        if thumb_query:
+            thumbnails.append({'category': category.category, 'thumb': thumb_query.thumb})
+
+
+    return render_template("collections.html", username = username, categories_and_thumbs = thumbnails)
+
+@main.route("/category/<category_name>", methods = ["GET","POST"])
+def category(category_name):
+    username = request.cookies.get('username')
+    user = Users.get(Users.username == username)
+
+    if request.method == "POST":
+        # Update the category
+        item_id = request.form.get("item_id")
+        new_category = request.form.get("new_category")
+
+        audio_item = Audios.get(Audios.id == item_id)
+        audio_item.category = new_category
+        audio_item.save()
+
+    items = Audios.select().where(Audios.user == user.id, Audios.category == category_name)
+
+    return render_template('category.html',items = items,category = category_name)
 
 @main.route('/register', methods=['GET', 'POST'])
 def register():

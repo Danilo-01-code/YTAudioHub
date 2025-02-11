@@ -1,6 +1,6 @@
-from yt_dlp import YoutubeDL
+import yt_dlp
 
-def download_yt_audio(url, output_path="./files", format = 'mp3'):
+def download_yt_audio(url, output_path, format):
     ydl_opts = {
         'format': 'bestaudio/best', 
         'outtmpl': f'{output_path}/%(title)s.%(ext)s', 
@@ -10,5 +10,16 @@ def download_yt_audio(url, output_path="./files", format = 'mp3'):
             'preferredquality': '192',
         }],
     }
-    with YoutubeDL(ydl_opts) as ydl:
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
+    
+def get_video_info(video_url):
+    ydl_opts = {
+        'quiet': True,
+        'extract_flat': True,
+        'skip_download': True
+    }
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(video_url, download=False)
+        return info.get("uploader"), info.get("title")

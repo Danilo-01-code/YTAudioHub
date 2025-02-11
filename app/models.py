@@ -14,6 +14,7 @@ class Users(Model, UserMixin):
 class Audios(Model,UserMixin):
     title = CharField(unique = True)
     path = CharField(unique = True)
+    thumb = CharField(unique = True)
     category = CharField()
     author = CharField()
     date = DateField(default=date.today)

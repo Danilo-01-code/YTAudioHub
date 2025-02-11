@@ -2,17 +2,19 @@
 
 {% block content %}
 <body>
-    <div>
-        {% if username %}
-            <p>Hi, {{ username }}!</p>
+    <div class = "user">
+        <div class = "hi_user">   
+            {% if username %}
+            <p class = "hi">Hi, {{ username }}!</p>
             <a href="{{ url_for('main.logout') }}">Logout</a>
         {% else %}
             <a href="{{ url_for('main.login') }}">Login</a>
             <a href="{{ url_for('main.register') }}">Register</a>
         {% endif %}
+        </div>
     </div>
-    <div> 
-        <p>Insert a Youtube Video or URL</p>
+    <div class = "box"> 
+        <p>Insert a URL from Youtube</p>
         <form method="POST">   
             <p>{{ form.yt_link.label }} <br>     
             {{ form.yt_link() }}

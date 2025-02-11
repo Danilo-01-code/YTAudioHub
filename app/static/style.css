@@ -1,0 +1,76 @@
+.hi_user{   
+    text-align: center;
+}
+
+.hi{    
+    color: #ffffff;
+}
+
+.info{  
+    color: #ffffff;
+}
+
+.user_title{
+    text-align: center;
+}
+
+.user {  
+    width: 400px;
+    margin: 50px auto;
+}
+
+.box {
+    background-color: #ffffff;
+    width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+p {
+    text-align: center;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #2d2d2d;
+}
+
+#yt_link {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#audioFormat {
+    background-color: #2d2d2d;
+    color: white;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+}
+
+#submit {
+    background-color: #2d2d2d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    margin: 20px auto 0;
+    width: fit-content;
+}
+
+#submit:hover, #audioFormat:hover {
+    background-color: #404040;
+}

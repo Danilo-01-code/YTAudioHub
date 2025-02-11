@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+    <div>
+        {% if username %}
+            <p>Hi, {{ username }}!</p>
+            <a href="{{ url_for('main.logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('main.login') }}">Login</a>
+            <a href="{{ url_for('main.register') }}">Register</a>
+        {% endif %}
+    </div>
+    <div> 
+        <p>Insert a Youtube Video or URL</p>
+        <form method="POST">   
+            <p>{{ form.yt_link.label }} <br>     
+            {{ form.yt_link() }}
+            </p>       
+            <select id="audioFormat" name="audioFormat" required>
+                <option value="mp3">MP3</option>
+                <option value="wav">WAV</option>
+            </select>
+        
+            <p>{{ form.submit() }}</p>
+        </form>
+    </div>
+</body>
+{% endblock %}

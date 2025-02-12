@@ -12,9 +12,9 @@ class Users(Model, UserMixin):
         database = db
 
 class Audios(Model,UserMixin):
-    title = CharField(unique = True)
-    path = CharField(unique = True)
-    thumb = CharField(unique = True)
+    title = CharField()
+    path = CharField()
+    thumb = CharField()
     category = CharField()
     author = CharField()
     date = DateField(default=date.today)

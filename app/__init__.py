@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_login import LoginManager
 from .core import main
 from dotenv import load_dotenv
@@ -24,6 +24,9 @@ def create_app():
     login_manager.init_app(app)
 
     app.register_blueprint(main)
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html'), 404
 
     @login_manager.user_loader
     def load_user(user_id):

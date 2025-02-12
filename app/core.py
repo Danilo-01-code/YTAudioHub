@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, make_response, redirect, send_from_directory
+from flask import Blueprint, render_template, request, redirect, url_for, flash, redirect
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import *
@@ -19,14 +19,24 @@ def index():
     if request.method == "POST":
         link = form.yt_link.data
         audio_format = request.form.get('audioFormat')
-        user = Users.get(Users.username == username)
+        if not username:
+            user = 0 # Without login the user cannot see the audios in collections
+        else:
+            user = Users.get(Users.username == username)
         current_directory = os.path.dirname(os.path.abspath(__file__))
         output_path = os.path.join(current_directory, "static", "files")
 
         author, title, thumbnail = get_data_url(link, output_path, audio_format)
+        audio = Audios.create(
+            title = title, 
+            author = author,
+            thumb = thumbnail, 
+            path = f"/files/{title}.{audio_format}",
+            user_id = user.id, 
+            category = "_"
+        )
 
-        audio = Audios.create(title = title, author = author,thumb = thumbnail, path = f"/files/{title}.{audio_format}",user_id = user.id, category = "_")
-
+        return render_template("index.html",username = username, form = form,audio = audio)
 
     return render_template("index.html",username = username, form = form)
 
@@ -54,23 +64,45 @@ def collections():
 
     return render_template("collections.html", username = username, categories_and_thumbs = thumbnails)
 
-@main.route("/category/<category_name>", methods = ["GET","POST"])
+@main.route("/category/<category_name>", methods = ["GET","POST","DELETE"])
 def category(category_name):
     username = request.cookies.get('username')
     user = Users.get(Users.username == username)
 
     if request.method == "POST":
-        # Update the category
-        item_id = request.form.get("item_id")
-        new_category = request.form.get("new_category")
+        if request.form.get('_method') == "DELETE":
+            item_id = request.form.get("item_id")
 
-        audio_item = Audios.get(Audios.id == item_id)
-        audio_item.category = new_category
-        audio_item.save()
+            audio = Audios.get(Audios.id == item_id)
+            file_path = audio.path
+            sanitized_file_path = []
 
-    items = Audios.select().where(Audios.user == user.id, Audios.category == category_name)
+            for char in file_path:
+                if char == '/':
+                    sanitized_file_path.append("\\")
+                else:
+                    sanitized_file_path.append(char)
 
-    return render_template('category.html',items = items,category = category_name)
+            current_directory = os.path.dirname(os.path.abspath(__file__))
+            os.remove(current_directory + "\\static\\"+"".join(sanitized_file_path))
+
+            audio.delete_instance()
+        else:
+            # Update the category
+            item_id = request.form.get("item_id")
+            new_category = request.form.get("new_category")
+
+            audio_item = Audios.get(Audios.id == item_id)
+            audio_item.category = new_category
+            audio_item.save()
+
+
+    items = Audios.select().where(
+        Audios.user == user.id, 
+        Audios.category == category_name
+    )
+
+    return render_template('category.html',items = items,category = category_name,username = username)
 
 @main.route('/register', methods=['GET', 'POST'])
 def register():

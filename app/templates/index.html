@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <body>
     <div class = "user">
         <div class = "hi_user">   
@@ -26,6 +27,35 @@
         
             <p>{{ form.submit() }}</p>
         </form>
+        {% if audio %}
+        <div>   
+            <div class = "image-container">   
+                <img class = "image" src="{{ audio.thumb }}" alt="Thumbnail" width="200">
+            </div>
+            <strong class = "item-title">{{ audio.title }}</strong>
+            <strong class = "item-author">{{ audio.author }}</strong>
+            <audio controls>
+                <source src="{{ url_for('static', filename=audio.path) }}" type="audio/mp3">
+            </audio>
+            <strong class="item-date">{{ audio.date }}</strong>
+            <a class="download-link" href="{{ url_for('static', filename=audio.path) }}" download>Download</a>
+            {% if username %}
+                <p>You can Change the Category in the <a href="{{ url_for('main.collections') }}" class="text-decoration-none custom-red">Collections</a></p>
+            {% endif %}
+        </div>
+        {% endif %}
     </div>
+    <main style="text-align: center;">  
+        <h2 class = "hi">How to download Youtube Videos ?</h2>
+        <p class = "hi" >
+        1. on Youtube, go to the video you want download, you can copy the video URL from the adress bar 
+        <br> or in the share option, if the video is longer than 60 minutes , age restricted, or <br>
+        Available in  few countries maybe the conversion will fail <br> <br>
+        2. Paste the URL in our converter, and choose what Audios extension you want (mp3, wav) then the 
+        <br> conversion will start, when finished you can download on your own machine.<br><br>
+        3. If you make the login you can access and categorize your videos on <strong>Collections</strong></p>
+    </main>
+
 </body>
+
 {% endblock %}

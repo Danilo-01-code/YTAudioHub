@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<ul>
+<ul style="list-style-type: none;">
     {% for item in categories_and_thumbs %}
         <li>
             <h3>{{ item.category }}</h3>  
@@ -12,4 +12,5 @@
         </li>
     {% endfor %}
 </ul>
+
 {% endblock %}

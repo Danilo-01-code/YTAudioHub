@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <body>
     <h2 class="category-header">Category: {{ category }}</h2>
     <div class="box">
@@ -21,10 +22,16 @@
                         <input type="hidden" name="item_id" value="{{ item.id }}">
                         <label for="new_category">New Category:</label>
                         <input type="text" name="new_category" id="new_category" placeholder="Enter new category" value="{{ item.category }}">
-                        <button type="submit">Change Category</button>
+                        <button class ="download-link" type="submit">Change Category</button>
                     </form>
 
                     <a class="download-link" href="{{ url_for('static', filename=item.path) }}" download>Download</a>
+
+                    <form action="{{ url_for('main.category', category_name=category) }}" method="POST">
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button class = "download-link" type="submit">Delete</button>
+                    </form>
                 </li>
             {% endfor %}
         </ul>

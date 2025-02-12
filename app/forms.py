@@ -23,4 +23,4 @@ class LinkForm(FlaskForm):
             )
         ]
     )
-    submit = SubmitField('Download')
+    submit = SubmitField('Convert')
